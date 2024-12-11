@@ -31,9 +31,10 @@
                                             <td>{{ $i }}</td>
                                             <td>{{ $faculty->name }}</td>
                                             <td>{{ $faculty->note }}</td>
-                                            <td><a class="btn btn-primary btn-sm" href="{{ route('faculty.edit', $faculty->id) }}" title="edit"><i class="fa fa-edit"></i></a>
-                                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete_{{ $faculty->id }}" title="Delete"><i class="fa fa-trash"></i></button></td>
-                                        </tr>
+                                            <td>
+                                                <a class="btn btn-primary btn-sm" href="{{ route('faculty.edit', $faculty->id) }}" title="edit"><i class="fa fa-edit"></i></a>
+                                                <a class="btn btn-danger btn-sm" href="{{ route('faculty.destroy', $faculty->id) }}" onclick="return confirm('Are you sure you want to delete this faculty ?');" title="Delete"><i class="fa fa-trash"></i></a>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
