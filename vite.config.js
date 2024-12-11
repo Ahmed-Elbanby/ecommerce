@@ -6,9 +6,22 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/app.css',
+                'resources/sass/app.scss',
                 'resources/js/app.js',
             ],
             refresh: true,
         }),
     ],
+    resolve: {
+        alias: {
+            '@': '/resources',
+        },
+    },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                additionalData: `@import "node_modules/bootstrap/scss/functions";`,
+            },
+        },
+    },
 });
