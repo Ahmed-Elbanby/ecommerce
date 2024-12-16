@@ -31,14 +31,14 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">اقسام الكليات:</h6>
-                        <a class="collapse-item" href="#">اضافة كلية</a>
-                        <a class="collapse-item" href="#">عرض الكليات</a>
+                        <a class="collapse-item" href="{{ route('faculty.create') }}">اضافة كلية</a>
+                        <a class="collapse-item" href="{{ route('faculty.index') }}">عرض الكليات</a>
                     </div>
                 </div>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ route('classroom.index') }}">
                     <i class="fas fa-fw fa-graduation-cap"></i>
                     <span>Classrooms</span></a>
             </li>

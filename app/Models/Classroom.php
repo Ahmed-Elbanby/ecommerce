@@ -14,7 +14,7 @@ class Classroom extends Model
         'faculty_id'
     ];
 
-    public function faculties(){
+    public function faculty(){
         return $this->belongsTo(Faculty::class, 'faculty_id');
     }
 }

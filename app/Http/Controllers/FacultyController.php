@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Faculty;
 use Illuminate\Http\Request;
+use Inertia\Inertia; // If using Inertia
+use Toastr;
 
 class FacultyController extends Controller
 {
@@ -34,8 +36,8 @@ class FacultyController extends Controller
 
 
             $validated = $request->validate([ // Use validate instead of validated.  Validated is only for requests that already passed validation.
-                'name' => 'required', // Add validation rules as needed.
-                'note' => 'nullable', //Allow note to be null
+                'name' => 'required|string', // Add validation rules as needed.
+                'note' => 'nullable|string','nullable'//Allow note to be null
             ]);
             Faculty::create($validated); //Simplified creation
 

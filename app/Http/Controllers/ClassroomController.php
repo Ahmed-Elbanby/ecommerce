@@ -13,9 +13,9 @@ class ClassroomController extends Controller
      */
     public function index()
     {
-        $classrooms = Classroom::all();
-        $faculties = Faculty::all();
-        return view('pages.classroom.index', compact('classrooms', 'faculties'));
+        $classrooms = Classroom::with('faculty')->get();
+        // $faculties = Faculty::all();
+        return view('pages.classroom.index', compact('classrooms'));
     }
 
     /**
@@ -23,7 +23,8 @@ class ClassroomController extends Controller
      */
     public function create()
     {
-        //
+        $faculties = Faculty::all();
+        return view('pages.classroom.create', compact('faculties'));
     }
 
     /**
@@ -38,7 +39,7 @@ class ClassroomController extends Controller
             ]);
             Classroom::create($validated);
 
-            toastr()->success('Classroom Added Successfully');
+            toastr()->success('Classroom Created Successfully');
             return redirect()->route('classroom.index');
             }catch(\Exception $e){
                 return redirect()->back()->withErrors(['error'=>$e->getMessage()]);

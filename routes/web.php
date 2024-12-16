@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\Classroom;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\ClassroomController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,3 +52,4 @@ Route::get('/tables', function () {
 })->name('tables');
 
 Route::resource('/faculty', FacultyController::class);
+Route::resource('/classroom', ClassroomController::class);
