@@ -29,26 +29,26 @@ class FacultyController extends Controller
      */
     public function store(Request $request)
     {
-        try{
-        // $validated = $request->validated();
+        try {
+            // $validated = $request->validated();
 
 
-        $validated = $request->validate([ // Use validate instead of validated.  Validated is only for requests that already passed validation.
-            'name' => 'required', // Add validation rules as needed.
-            'note' => 'nullable', //Allow note to be null
-        ]);
-        Faculty::create($validated); //Simplified creation
+            $validated = $request->validate([ // Use validate instead of validated.  Validated is only for requests that already passed validation.
+                'name' => 'required', // Add validation rules as needed.
+                'note' => 'nullable', //Allow note to be null
+            ]);
+            Faculty::create($validated); //Simplified creation
 
 
-        // $faculty = new Faculty();
-        // $faculty->name = $request->Name;
-        // $faculty->note = $request->Note;
-        // $faculty->save();
+            // $faculty = new Faculty();
+            // $faculty->name = $request->Name;
+            // $faculty->note = $request->Note;
+            // $faculty->save();
 
-        toastr()->success('Faculty Added Successfully');
-        return redirect()->route('faculty.index');
-        }catch(\Exception $e){
-            return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
+            toastr()->success('Faculty Added Successfully');
+            return redirect()->route('faculty.index');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 
@@ -73,7 +73,7 @@ class FacultyController extends Controller
      */
     public function update(Request $request, Faculty $faculty)
     {
-        try{
+        try {
             // $faculty = Faculty::findOrFail($request->id);
             // $faculty->update([
             //     $faculty->name = $request->name,
@@ -91,8 +91,8 @@ class FacultyController extends Controller
 
             toastr()->success('Faculty Updated Successfully.');
             return redirect()->route('faculty.index');
-        }catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 
@@ -101,7 +101,12 @@ class FacultyController extends Controller
      */
     public function destroy(Request $request, Faculty $faculty)
     {
-        $faculty = Faculty::findOrFail($request->id)->delete();
+        // $faculty = Faculty::findOrFail($request->id)->delete();
+        // toastr()->success('Faculty Deleted Successfully');
+        // return redirect()->route('faculty.index');
+
+        $faculty->delete();
+
         toastr()->success('Faculty Deleted Successfully');
         return redirect()->route('faculty.index');
     }
