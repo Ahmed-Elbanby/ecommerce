@@ -40,7 +40,7 @@
                                         @csrf
                                         @method('DELETE') <!-- Important for specifying the DELETE method -->
                                         <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Are you sure you want to delete this faculty?');">
+                                            onclick="return confirm('Are you sure you want to delete this Classroom?');">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </form>

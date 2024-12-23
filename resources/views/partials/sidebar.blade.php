@@ -22,7 +22,7 @@
             <hr class="sidebar-divider">
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-graduation-cap"></i>
@@ -35,12 +35,24 @@
                         <a class="collapse-item" href="{{ route('faculty.index') }}">عرض الكليات</a>
                     </div>
                 </div>
+            </li> -->
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('faculty.index') }}">
+                    <i class="fas fa-fw fa-graduation-cap"></i>
+                    <span>Faculties</span></a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('classroom.index') }}">
                     <i class="fas fa-fw fa-graduation-cap"></i>
                     <span>Classrooms</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('section.index') }}">
+                    <i class="fas fa-fw fa-graduation-cap"></i>
+                    <span>Sections</span></a>
             </li>
 
             <hr class="sidebar-divider">

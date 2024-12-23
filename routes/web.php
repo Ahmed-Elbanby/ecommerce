@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\ClassroomController;
+use App\Http\Controllers\SectionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,3 +54,4 @@ Route::get('/tables', function () {
 
 Route::resource('/faculty', FacultyController::class);
 Route::resource('/classroom', ClassroomController::class);
+Route::resource('/section', SectionController::class);

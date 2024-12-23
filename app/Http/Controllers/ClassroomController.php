@@ -59,7 +59,8 @@ class ClassroomController extends Controller
      */
     public function edit(Classroom $classroom)
     {
-        //
+        $faculties = Faculty::all();
+        return view('pages.classroom.edit', compact('classroom', 'faculties'));
     }
 
     /**
@@ -67,7 +68,13 @@ class ClassroomController extends Controller
      */
     public function update(Request $request, Classroom $classroom)
     {
-        //
+        $validate = $request->validate([
+            'name' => 'required',
+            'faculty_id' => 'required',
+        ]);
+        $classroom->update($validate);
+        toastr('Classroom Updated Successfully');
+        return redirect()->route('classroom.index');
     }
 
     /**
@@ -75,6 +82,9 @@ class ClassroomController extends Controller
      */
     public function destroy(Classroom $classroom)
     {
-        //
+        // $classroom = Classroom::findOrFail($request->id)->delete();
+        $classroom->delete();
+        toastr()->success('Classroom Deleted Successfully');
+        return redirect()->route('classroom.index');
     }
 }

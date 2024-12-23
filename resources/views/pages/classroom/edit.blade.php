@@ -6,22 +6,26 @@
 <div class="container mt-5">
     <div class="card">
         <div class="card-header text-black">
-            <h3>Edit Faculty</h3>
+            <h3>Edit Classroom</h3>
         </div>
         <div class="card-body">
-            <form action="{{ route('faculty.update', $faculty->id) }}" method="POST">
+            <form action="{{ route('classroom.update', $classroom->id) }}" method="POST">
                 @csrf
-                @method('PUT')
                 <div class="form-group">
                     <label for="name">Name:</label>
-                    <input type="text" value="{{ $faculty->name }}" class="form-control" id="name" name="name" required>
+                    <input type="text" value="{{ $classroom->name }}" class="form-control" id="name" name="name" required>
                 </div>
                 <div class="form-group">
-                    <label for="note">Note:</label>
-                    <textarea class="form-control" id="note" name="note" rows="3">{{ $faculty->note }}</textarea>
+                    <label for="faculty_id">Faculty:</label>
+                    <select class="form-control" id="faculty_id" name="faculty_id" required>
+                        @foreach ($faculties as $faculty)
+                            <option value="{{ $faculty->id }}" {{ $faculty->id == $classroom->faculty_id ? 'selected' : '' }}>
+                            {{ $faculty->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Create Faculty</button>
-                <a href="{{ route('faculty.index') }}" class="btn btn-secondary">Cancel</a>
+                <a href="{{ route('classroom.index') }}" class="btn btn-secondary">Cancel</a>
             </form>
         </div>
     </div>
