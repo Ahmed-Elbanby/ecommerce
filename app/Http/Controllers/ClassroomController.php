@@ -32,7 +32,7 @@ class ClassroomController extends Controller
      */
     public function store(Request $request)
     {
-        try{
+        try {
             $validated = $request->validate([
                 'name' => 'required',
                 'faculty_id' => 'required',
@@ -41,9 +41,9 @@ class ClassroomController extends Controller
 
             toastr()->success('Classroom Created Successfully');
             return redirect()->route('classroom.index');
-            }catch(\Exception $e){
-                return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
-            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -87,4 +87,11 @@ class ClassroomController extends Controller
         toastr()->success('Classroom Deleted Successfully');
         return redirect()->route('classroom.index');
     }
+
+    public function getClassrooms($faculty_id)
+    {
+        $classrooms = ClassroomController::where('faculty_id', $faculty_id)->get();
+        return response()->json($classrooms);
+    }
+
 }

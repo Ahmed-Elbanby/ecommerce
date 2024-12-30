@@ -25,7 +25,9 @@ class SectionController extends Controller
      */
     public function create()
     {
-        //
+        $faculties = Faculty::all();
+        $classrooms = Classroom::all();
+        return view('pages.section.create', compact('faculties', 'classrooms'));
     }
 
     /**
@@ -33,7 +35,20 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $validated = $request->validate([
+                'name' => 'required',
+                'status' => 'required',
+                'faculty_id' => 'required',
+                'classroom_id' => 'required',
+            ]);
+            Section::create($validated);
+
+            toastr()->success('Section Created Successfully');
+            return redirect()->route('section.index');
+            }catch(\Exception $e){
+                return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
+        }
     }
 
     /**
