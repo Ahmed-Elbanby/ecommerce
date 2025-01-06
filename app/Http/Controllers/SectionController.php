@@ -82,4 +82,14 @@ class SectionController extends Controller
     {
         //
     }
+    public function getClassrooms(Request $request, $facultyId)
+    {
+        $faculty = Faculty::find($facultyId);
+        if ($faculty) {
+            $classrooms = $faculty->classrooms; //Using the Eloquent relationship (see previous response)
+            return response()->json($classrooms);
+        } else {
+            return response()->json([], 404); //Faculty not found
+        }
+    }   
 }

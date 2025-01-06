@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Faculty;
+use App\Models\Classroom;
 use Illuminate\Http\Request;
 use Inertia\Inertia; // If using Inertia
 use Toastr;
@@ -111,5 +112,11 @@ class FacultyController extends Controller
 
         toastr()->success('Faculty Deleted Successfully');
         return redirect()->route('faculty.index');
+    }
+
+    public function getClassrooms($faculty_id)
+    {
+        $classrooms = ClassroomController::where('faculty_id', $faculty_id)->get();
+        return response()->json($classrooms);
     }
 }

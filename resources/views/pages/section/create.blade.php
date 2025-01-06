@@ -35,44 +35,32 @@
                         <option value="">Select Classroom</option>
                     </select>
                 </div>
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script>
+                    $(document).ready(function () {
+                        $('#faculty_id').on('change', function () {
+                            // var facultyId = $(this).val();
+                            let facultyId = $(this).val();
+                            $('#classroom_id').html('<option value="">Loading...</option>');
 
-                @push('scripts')
-                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                    <script>
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-
-                        $(document).ready(function () {
-                            $('#faculty_id').on('change', function () {
-                                var facultyId = $(this).val();
-                                if (facultyId) {
-                                    $.ajax({
-                                            url: "{{ route('classrooms.get-by-faculty', '') }}/" + facultyId,
-                                        type: 'GET',
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            $('#classroom_id').empty();
-                                            $('#classroom_id').append('<option value="">Select Classroom</option>');
-                                            $.each(data, function (key, value) {
-                                                $('#classroom_id').append('<option value="' + value.id + '">' + value.name + '</option>');
-                                            });
-                                        },
-                                        error: function (xhr, status, error) {
-                                            console.error('Error:', error);
-                                        }
-                                    });
-                                } else {
+                            $.ajax({
+                                url: "{{ URL::to('classroom') }}/" + facultyId,
+                                type: 'GET',
+                                dataType: 'json',
+                                success: function (data) {
                                     $('#classroom_id').empty();
-                                    $('#classroom_id').append('<option value="">Select Classroom</option>');
+                                    $.each(data, function (key, value) {
+                                        $('#classroom_id').append('<option value="' + value.id + '">' + value.name + '</option>');
+                                    });
+                                }
+                                error: function (xhr, status, error) {
+                                    $('#classroom_id').html('<option value="">Error loading classrooms. Please try again.</option>');
+                                    console.error('Error:', error);
                                 }
                             });
                         });
-                    </script>
-                @endpush
-
+                    });
+                </script>
                 <button type="submit" class="btn btn-primary">Create Classroom</button>
                 <a href="{{ route('section.index') }}" class="btn btn-secondary">Cancel</a>
             </form>

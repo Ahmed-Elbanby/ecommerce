@@ -88,10 +88,21 @@ class ClassroomController extends Controller
         return redirect()->route('classroom.index');
     }
 
-    public function getClassrooms($faculty_id)
+    // public function getClassrooms($faculty_id)
+    // {
+    //     $classrooms = ClassroomController::where('faculty_id', $faculty_id)->get();
+    //     return response()->json($classrooms);
+    // }
+
+    public function getClassrooms(Request $request, $facultyId)
     {
-        $classrooms = ClassroomController::where('faculty_id', $faculty_id)->get();
-        return response()->json($classrooms);
+        $faculty = Faculty::find($facultyId);
+        if ($faculty) {
+            $classrooms = $faculty->classrooms; // Eloquent handles the database query
+            return response()->json($classrooms);
+        } else {
+            return response()->json([], 404); //Faculty not found
+        }
     }
 
 }
