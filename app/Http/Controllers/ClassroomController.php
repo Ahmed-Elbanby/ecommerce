@@ -94,15 +94,21 @@ class ClassroomController extends Controller
     //     return response()->json($classrooms);
     // }
 
-    public function getClassrooms(Request $request, $facultyId)
+    // public function getClassrooms(Request $request, $facultyId)
+    // {
+    //     $faculty = Faculty::find($facultyId);
+    //     if ($faculty) {
+    //         $classrooms = $faculty->classrooms; // Eloquent handles the database query
+    //         return response()->json($classrooms);
+    //     } else {
+    //         return response()->json([], 404); //Faculty not found
+    //     }
+    // }
+
+    public function getClassrooms($faculty_id)
     {
-        $faculty = Faculty::find($facultyId);
-        if ($faculty) {
-            $classrooms = $faculty->classrooms; // Eloquent handles the database query
-            return response()->json($classrooms);
-        } else {
-            return response()->json([], 404); //Faculty not found
-        }
+        $classrooms = Classroom::where('faculty_id', $faculty_id)->get();
+        return response()->json($classrooms);
     }
 
 }

@@ -56,3 +56,4 @@ Route::resource('/faculty', FacultyController::class);
 Route::resource('/classroom', ClassroomController::class);
 Route::resource('/section', SectionController::class);
 Route::get('/classroom/{facultyId}', [SectionController::class, 'getClassrooms'])->name('get.classrooms');
+Route::get('/classrooms/{faculty_id}', [ClassroomController::class, 'getClassrooms'])->name('classrooms.get');

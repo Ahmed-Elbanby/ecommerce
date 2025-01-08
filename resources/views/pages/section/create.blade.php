@@ -32,35 +32,10 @@
                 <div class="form-group">
                     <label for="classroom_id">Classroom:</label>
                     <select class="form-control" id="classroom_id" name="classroom_id" required>
-                        <option value="">Select Classroom</option>
+                        <option value="">Select Classrooms</option>
                     </select>
                 </div>
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                <script>
-                    $(document).ready(function () {
-                        $('#faculty_id').on('change', function () {
-                            // var facultyId = $(this).val();
-                            let facultyId = $(this).val();
-                            $('#classroom_id').html('<option value="">Loading...</option>');
 
-                            $.ajax({
-                                url: "{{ URL::to('classroom') }}/" + facultyId,
-                                type: 'GET',
-                                dataType: 'json',
-                                success: function (data) {
-                                    $('#classroom_id').empty();
-                                    $.each(data, function (key, value) {
-                                        $('#classroom_id').append('<option value="' + value.id + '">' + value.name + '</option>');
-                                    });
-                                }
-                                error: function (xhr, status, error) {
-                                    $('#classroom_id').html('<option value="">Error loading classrooms. Please try again.</option>');
-                                    console.error('Error:', error);
-                                }
-                            });
-                        });
-                    });
-                </script>
                 <button type="submit" class="btn btn-primary">Create Classroom</button>
                 <a href="{{ route('section.index') }}" class="btn btn-secondary">Cancel</a>
             </form>
@@ -70,5 +45,40 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $(document).ready(function () {
+        $('#faculty_id').change(function () {
+            const facultyId = $(this).val();
+            const classroomSelect = $('#classroom_id');
+
+            if (facultyId) {
+                classroomSelect.empty().append('<option value="">Loading...</option>');
+                $.ajax({
+                    url: `/classrooms/${facultyId}`,
+                    type: 'GET',
+                    success: function (response) {
+                        classroomSelect.empty();
+                        response.forEach(classroom => {
+                            classroomSelect.append(`<option value="${classroom.id}">${classroom.name}</option>`);
+                        });
+                    },
+                    error: function () {
+                        alert('Failed to load classrooms. Please try again.');
+                    }
+                });
+            } else {
+                classroomSelect.empty().append('<option value="">Select Classrooms</option>');
+            }
+        });
+    });
+</script>
 
 @endsection

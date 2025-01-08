@@ -43,7 +43,7 @@
                                 </thead>
                                 <tbody>
                                     <?php    $i = 0 ?>
-                                    @foreach($sections as $section)
+                                    @foreach($faculty->sections as $index => $section)
                                         <tr>
                                             <?php        $i++ ?>
                                             <td>{{ $i }}</td>

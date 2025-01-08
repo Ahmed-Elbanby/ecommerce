@@ -22,3 +22,5 @@ yarn-error.log
 .env
 /public/storage
 /storage/*.key
+
+.codegpt
