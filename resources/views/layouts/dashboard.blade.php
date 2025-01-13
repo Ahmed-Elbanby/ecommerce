@@ -14,6 +14,15 @@
     <link href="{{ asset('sb-admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css') }}">
     <!-- Custom styles for this template-->
     <link href="{{ asset('sb-admin/css/sb-admin-2.min.css" rel="stylesheet') }}">
+
+    <!-- AJAX For Search -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- My Custom Style -->
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+
+    <!-- LiveWire Styles -->
+    @livewireStyles
 </head>
 
 <body id="page-top">
@@ -76,6 +85,11 @@
     <!-- Page level custom scripts -->
     <script src="{{ asset('sb-admin/js/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('sb-admin/js/demo/chart-pie-demo.js') }}"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- LiveWire Scripts -->
+    @livewireScripts
 </body>
 
 </html>

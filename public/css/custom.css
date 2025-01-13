@@ -1,0 +1,83 @@
+/* public/css/custom.css */
+.navbar-search {
+    position: relative;
+}
+
+#category {
+    background-color: #f8f9fa;
+    border: 1px solid #e3e6f0;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    color: #6e707e;
+}
+
+#search {
+    background-color: #f8f9fa;
+    border: 1px solid #e3e6f0;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    color: #6e707e;
+}
+
+#search-button {
+    background-color: #4e73df;
+    border: 1px solid #4e73df;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    color: #fff;
+}
+
+#search-button:hover {
+    background-color: #2e59d9;
+    border-color: #2653d4;
+}
+
+#results {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #e3e6f0;
+}
+
+#results .list-group-item {
+    border: none;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.875rem;
+    color: #6e707e;
+}
+
+#results .list-group-item:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+#results .list-group-item:not(:last-child) {
+    border-bottom: 1px solid #e3e6f0;
+}
+
+#category {
+    cursor: pointer; /* Make it look clickable */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+    border-right: 2px solid #c3d1ff !important;
+    width: auto !important; /* Fit the largest word */
+    max-width: 110px !important;
+    background-color: #edf6ff !important;
+}
+
+#category option {
+    background-color: white !important;
+}
+
+#category option:hover {
+    background-color: white !important;
+}
+
+#category:hover {
+    background-color: #f8f9fa !important; /* Light background on hover */
+    background-color: #e2f1ff !important;
+}
+
+#category:focus {
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 0 2px rgba(78, 115, 223, 0.25); /* Add a focus ring */
+}
+

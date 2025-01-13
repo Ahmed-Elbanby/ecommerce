@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\ClassroomController;
-use App\Http\Controllers\SectionController;
+use App\Http\Controllers\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,3 +57,7 @@ Route::resource('/classroom', ClassroomController::class);
 Route::resource('/section', SectionController::class);
 Route::get('/classroom/{facultyId}', [SectionController::class, 'getClassrooms'])->name('get.classrooms');
 Route::get('/classrooms/{faculty_id}', [ClassroomController::class, 'getClassrooms'])->name('classrooms.get');
+
+Route::get('livewire', function(){ return view('livewire-test');});
+
+Route::get('/search', [SearchController::class, 'search'])->name('search');
