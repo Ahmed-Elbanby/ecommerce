@@ -105,9 +105,18 @@ class ClassroomController extends Controller
     //     }
     // }
 
-    public function getClassrooms($faculty_id)
+    public function getClassrooms(Request $request, $faculty_id)
     {
         $classrooms = Classroom::where('faculty_id', $faculty_id)->get();
+
+        $sectionClassroomId = $request->input('section_classroom_id'); // Pass this from the frontend
+
+        // Add a flag for "selected"
+        $classrooms = $classrooms->map(function ($classroom) use ($sectionClassroomId) {
+            $classroom->is_selected = ($classroom->id == $sectionClassroomId);
+            return $classroom;
+        });
+
         return response()->json($classrooms);
     }
 

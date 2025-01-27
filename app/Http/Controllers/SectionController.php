@@ -64,7 +64,9 @@ class SectionController extends Controller
      */
     public function edit(Section $section)
     {
-        //
+        $faculties = Faculty::all();
+        $classrooms = Classroom::all();
+        return view('pages.section.edit', compact('section', 'faculties', 'classrooms'));
     }
 
     /**
@@ -72,7 +74,14 @@ class SectionController extends Controller
      */
     public function update(Request $request, Section $section)
     {
-        //
+        $validate = $request->validate([
+            'name' => 'required',
+            'faculty_id' => 'required',
+            'classroom_id' => 'required',
+        ]);
+        $section->update($validate);
+        toastr('Section Updated Successfully');
+        return redirect()->route('section.index');
     }
 
     /**
@@ -80,7 +89,9 @@ class SectionController extends Controller
      */
     public function destroy(Section $section)
     {
-        //
+        $section->delete();
+        toastr()->success('Section Deleted Successfully');
+        return redirect()->route('section.index');
     }
     public function getClassrooms(Request $request, $facultyId)
     {

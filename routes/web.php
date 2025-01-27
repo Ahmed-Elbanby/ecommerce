@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\ClassroomController;
+use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SearchController;
 
 /*
