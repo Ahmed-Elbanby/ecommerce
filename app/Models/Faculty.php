@@ -22,4 +22,9 @@ class Faculty extends Model
     {
         return $this->hasMany(Section::class);
     }
+
+    public function students()
+    {
+        return $this->hasMany(Student::class, 'facultie_id');
+    }
 }

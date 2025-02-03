@@ -11,6 +11,7 @@
         <div class="card-body">
             <form action="{{ route('section.update', $section->id) }}" method="POST">
                 @csrf
+                @method('PUT')
                 <div class="form-group">
                     <label for="name">Name:</label>
                     <input type="text" class="form-control" id="name" name="name" value="{{ $section->name }}" required>
@@ -75,15 +76,33 @@
                     url: `/classrooms/${facultyId}`,
                     type: 'GET',
                     data: { section_classroom_id: selectedClassroomId },
+                    // success: function (response) {
+                    //     classroomSelect.empty();
+                    //     const isSelected = classroom.is_selected ? 'selected' : '';
+                    //     response.forEach(classroom => {
+                    //         classroomSelect.append(`<option value="${classroom.id}" ${isSelected}>${classroom.name}</option>`);
+                    //     });
+                    // },
+                    // error: function () {
+                    //     alert('Failed to load classrooms. Please try again.');
+                    // }
                     success: function (response) {
                         classroomSelect.empty();
-                        const isSelected = classroom.is_selected ? 'selected' : '';
-                        response.forEach(classroom => {
-                            classroomSelect.append(`<option value="${classroom.id}" ${isSelected}>${classroom.name}</option>`);
-                        });
+                        if (response.length === 0) {
+                            classroomSelect.append('<option value="">No Classrooms Found</option>');
+                        } else {
+                            response.forEach(classroom => {
+                                const isSelected = classroom.id == selectedClassroomId ? 'selected' : '';
+                                classroomSelect.append(`<option value="${classroom.id}" ${isSelected}>${classroom.name}</option>`);
+                            });
+                        }
                     },
-                    error: function () {
-                        alert('Failed to load classrooms. Please try again.');
+                    error: function (xhr, status, error) {
+                        if (status === '404') {
+                            classroomSelect.empty().append('<option value="">Classroom Id NOT Exist</option>');
+                        } else {
+                            classroomSelect.empty().append(`<option value="">${error}</option>`);
+                        }
                     }
                 });
             } else {

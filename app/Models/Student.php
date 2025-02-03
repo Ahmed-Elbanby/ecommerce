@@ -5,11 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Doctor extends Model
+class Student extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'email', 'password', 'faculty_id', 'classroom_id', 'section_id'];
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'birth_day',
+        'facultie_id',
+        'classroom_id',
+        'section_id',
+        'doctor_id',
+    ];
+    protected $table = 'stedents';
 
     public function faculty()
     {
@@ -26,4 +36,13 @@ class Doctor extends Model
         return $this->belongsTo(Section::class, 'section_id');
     }
 
+    public function parent()
+    {
+        return $this->belongsTo(Section::class, 'section_id');
+    }
+
+    public function doctor()
+    {
+        return $this->belongsTo(Section::class, 'section_id');
+    }
 }

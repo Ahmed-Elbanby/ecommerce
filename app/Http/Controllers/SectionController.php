@@ -35,7 +35,7 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
-        try{
+        try {
             $validated = $request->validate([
                 'name' => 'required',
                 'status' => 'required',
@@ -46,8 +46,8 @@ class SectionController extends Controller
 
             toastr()->success('Section Created Successfully');
             return redirect()->route('section.index');
-            }catch(\Exception $e){
-                return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 
@@ -102,5 +102,5 @@ class SectionController extends Controller
         } else {
             return response()->json([], 404); //Faculty not found
         }
-    }   
+    }
 }

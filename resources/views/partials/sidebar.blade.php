@@ -55,6 +55,18 @@
                     <span>Sections</span></a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('doctor.index') }}">
+                    <i class="fas fa-fw fa-graduation-cap"></i>
+                    <span>Doctors</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('student.index') }}">
+                    <i class="fas fa-fw fa-graduation-cap"></i>
+                    <span>Students</span></a>
+            </li>
+
             <hr class="sidebar-divider">
 
             <!-- Nav Item - Utilities Collapse Menu -->

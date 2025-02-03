@@ -8,6 +8,9 @@ use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\StudentController;
+use App\Models\Section;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,7 +61,15 @@ Route::resource('/classroom', ClassroomController::class);
 Route::resource('/section', SectionController::class);
 Route::get('/classroom/{facultyId}', [SectionController::class, 'getClassrooms'])->name('get.classrooms');
 Route::get('/classrooms/{faculty_id}', [ClassroomController::class, 'getClassrooms'])->name('classrooms.get');
+Route::get('/sections/{classroomId}', function ($classroomId) {
+    $sections = Section::where('classroom_id', $classroomId)->get();
+    return response()->json($sections);
+});
 
 Route::get('livewire', function(){ return view('livewire-test');});
 
 Route::get('/search', [SearchController::class, 'search'])->name('search');
+
+Route::resource('doctor', DoctorController::class);
+
+Route::resource('student', StudentController::class);
