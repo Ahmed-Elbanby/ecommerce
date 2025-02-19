@@ -13,15 +13,17 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email');
-            $table->string('password');
-            $table->date('birth_day');
-            $table->foreignId('facultie_id')->references('id')->on('faculties')->onDelete('cascade');
+            $table->string("name");
+            $table->string("email");
+            $table->string("password");
+            $table->string("gender");
+            $table->date("birth");
+            $table->foreignId('faculty_id')->references('id')->on('faculties')->onDelete('cascade');
             $table->foreignId('classroom_id')->references('id')->on('classrooms')->onDelete('cascade');
             $table->foreignId('section_id')->references('id')->on('sections')->onDelete('cascade');
-            $table->foreignId('parent_id')->references('id')->on('parents')->onDelete('cascade');
-            $table->foreignId('doctor_id')->references('id')->on('doctors')->onDelete('cascade');
+            $table->foreignId('nationality_id')->references('id')->on('nationalities')->onDelete('cascade');
+            $table->foreignId('parent_id')->references('id')->on('my__parents')->onDelete('cascade');
+            $table->foreignId('doctors_id')->references('id')->on('doctors')->onDelete('cascade');
             $table->timestamps();
         });
     }

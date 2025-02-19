@@ -13,13 +13,15 @@ class Student extends Model
         'name',
         'email',
         'password',
+        'gender',
         'birth_day',
-        'facultie_id',
+        'faculty_id',
         'classroom_id',
         'section_id',
-        'doctor_id',
+        'notionlity_id',
+        'parent_id',
+        'doctor_id'
     ];
-    protected $table = 'stedents';
 
     public function faculty()
     {
@@ -36,13 +38,18 @@ class Student extends Model
         return $this->belongsTo(Section::class, 'section_id');
     }
 
+    public function nationality()
+    {
+        return $this->belongsTo(Section::class, 'nationality_id');
+    }
+
     public function parent()
     {
-        return $this->belongsTo(Section::class, 'section_id');
+        return $this->belongsTo(Section::class, 'parent_id');
     }
 
     public function doctor()
     {
-        return $this->belongsTo(Section::class, 'section_id');
+        return $this->belongsTo(Section::class, 'doctor_id');
     }
 }

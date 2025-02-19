@@ -73,3 +73,7 @@ Route::get('/search', [SearchController::class, 'search'])->name('search');
 Route::resource('doctor', DoctorController::class);
 
 Route::resource('student', StudentController::class);
+Route::resource('students', StudentController::class);
+
+Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
+Route::post('/students', [StudentController::class, 'store'])->name('students.store');
