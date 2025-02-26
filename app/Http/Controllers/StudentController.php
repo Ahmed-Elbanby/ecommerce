@@ -10,6 +10,7 @@ use App\Models\My_Parent;
 use App\Models\Doctor;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
@@ -18,10 +19,24 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
-        $students = Student::all();
+        // $students = Student::all();
+        $students = Student::query();
+
         if ($request->has("search")) {
-            $students = Student::where('name', 'like', "%{$request->searrch}%")->orwhere('email', 'like', "%{$request->searrch}%");
+            // $students = Student::where('name', 'like', "%{$request->searrch}%")
+            //             ->orwhere('email', 'like', "%{$request->searrch}%");
+            $search = $request->input("search");
+            $students->where('name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%");
         }
+
+        $students = $students->get();
+
+        // Check if the request is an AJAX request
+    if ($request->ajax()) {
+        // Return only the table rows as HTML
+        return view('pages.student.partials.students_table_rows', ['students' => $students]);
+    }
 
         return view('pages.student.index', [
             'students' => $students,
@@ -54,6 +69,9 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
+
+        $hashedPassword = Hash::make($request->password);
+
         $data = $request->validate([
             'name' => ['string', 'required', 'max:20'],
             'email' => ['string', 'required', 'email', 'max:255'],
@@ -67,11 +85,13 @@ class StudentController extends Controller
             'parent_id' => ['required'],
             'doctor_id' => ['required'],
         ]);
-    
+
+        $data['password'] = Hash::make($data['password']);
+
         Student::create($data);
-    
+
         toastr()->success('success');
-    
+
         return redirect()->route('student.index');
     }
 

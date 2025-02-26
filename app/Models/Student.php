@@ -18,7 +18,7 @@ class Student extends Model
         'faculty_id',
         'classroom_id',
         'section_id',
-        'notionlity_id',
+        'nationality_id',
         'parent_id',
         'doctor_id'
     ];
@@ -40,16 +40,16 @@ class Student extends Model
 
     public function nationality()
     {
-        return $this->belongsTo(Section::class, 'nationality_id');
+        return $this->belongsTo(Nationalitie::class, 'nationality_id');
     }
 
     public function parent()
     {
-        return $this->belongsTo(Section::class, 'parent_id');
+        return $this->belongsTo(My_Parent::class, 'parent_id');
     }
 
     public function doctor()
     {
-        return $this->belongsTo(Section::class, 'doctor_id');
+        return $this->belongsTo(Doctor::class, 'doctor_id');
     }
 }

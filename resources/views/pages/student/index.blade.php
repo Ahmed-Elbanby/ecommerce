@@ -6,20 +6,27 @@
 <div class="container">
     <h1>Students List</h1>
     
+    <!-- <form method="GET" action="{{ route('students.index') }}" class="mb-3">
+        <div class="row">
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="search" placeholder="Search by Name or Email" value="{{ request('search') }}">
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form> -->
     <form method="GET" action="{{ route('students.index') }}" class="mb-3">
         <div class="row">
             <div class="col-md-4">
-                <!-- <input type="text" class="form-control" name="name" placeholder="Search by Name" value="{{ request('name') }}"> -->
-                <input type="text" class="form-control" name="search" placeholder="Search by Name or Email" value="{{ request('search') }}">
+                <input type="text" class="form-control" id="search" name="search" placeholder="Search by Name or Email" value="{{ request('search') }}">
             </div>
-            <!-- <div class="col-md-4">
-                <input type="text" class="form-control" name="email" placeholder="Search by Email" value="{{ request('email') }}">
-            </div> -->
             <div class="col-md-4">
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </div>
     </form>
+    <a class="btn bg-gradient-primary btn-sm text-white" href="{{ route('student.create') }}">Create New</a>
 
     <table class="table table-bordered">
         <thead>
@@ -27,13 +34,13 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Gender</th>
-                <th>Birth Day</th>
-                <th>Faculty ID</th>
-                <th>Classroom ID</th>
-                <th>Section ID</th>
-                <th>Nationality ID</th>
-                <th>Parent ID (Father Name)</th>
-                <th>Doctor ID</th>
+                <th>Birth Date</th>
+                <th>Faculty</th>
+                <th>Classroom</th>
+                <th>Section</th>
+                <th>Nationality</th>
+                <th>Parent(Father Name)</th>
+                <th>Doctor</th>
             </tr>
         </thead>
         <tbody>
@@ -43,15 +50,41 @@
                     <td>{{ $student->email }}</td>
                     <td>{{ $student->gender }}</td>
                     <td>{{ $student->birth_day }}</td>
-                    <td>{{ $student->faculty_id }}</td>
-                    <td>{{ $student->classroom_id }}</td>
-                    <td>{{ $student->section_id }}</td>
-                    <td>{{ $student->nationality_id }}</td>
-                    <td>{{ $student->parent ? $student->parent->father_name : 'N/A' }}</td>
-                    <td>{{ $student->doctor_id }}</td>
+                    <td>{{ $student->faculty->name }}</td>
+                    <td>{{ $student->classroom->name }}</td>
+                    <td>{{ $student->section->name }}</td>
+                    <td>{{ $student->nationality->name }}</td>
+                    <td>{{ $student->parent->father_name }}</td>
+                    <td>{{ $student->doctor->name }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 </div>
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Real-Time Search Script -->
+<script>
+    $(document).ready(function () {
+        // Listen for input changes in the search field
+        $('#search').on('input', function () {
+            const searchQuery = $(this).val(); // Get the search query
+
+            // Send an AJAX request to the server
+            $.ajax({
+                url: "{{ route('students.index') }}", // Route to the index method
+                method: 'GET',
+                data: { search: searchQuery }, // Send the search query as a parameter
+                success: function (response) {
+                    // Replace the table body with the updated results
+                    $('#students-table-body').html(response);
+                },
+                error: function (xhr) {
+                    console.error('Error:', xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
 @endsection
