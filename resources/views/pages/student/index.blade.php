@@ -56,6 +56,20 @@
                     <td>{{ $student->nationality->name }}</td>
                     <td>{{ $student->parent->father_name }}</td>
                     <td>{{ $student->doctor->name }}</td>
+                    <td>
+                            <a class="btn btn-primary btn-sm" href="{{ route('student.edit', $student->id) }}"
+                                title="edit"><i class="fa fa-edit"></i></a>
+                            <!-- <a class="btn btn-danger btn-sm" href="{{ route('classroom.destroy', $student->id) }}" onclick="return confirm('Are you sure you want to delete this faculty ?');" title="Delete"><i class="fa fa-trash"></i></a> -->
+                            <form action="{{ route('student.destroy', $student->id) }}" method="POST"
+                                style="display:inline;">
+                                @csrf
+                                @method('DELETE') <!-- Important for specifying the DELETE method -->
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Are you sure you want to delete this Student?');">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
                 </tr>
             @endforeach
         </tbody>

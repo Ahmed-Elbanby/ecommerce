@@ -73,7 +73,7 @@ class StudentController extends Controller
         $hashedPassword = Hash::make($request->password);
 
         $data = $request->validate([
-            'name' => ['string', 'required', 'max:20'],
+            'name' => ['string', 'required', 'max:255'],
             'email' => ['string', 'required', 'email', 'max:255'],
             'password' => ['string', 'required', 'min:8'],
             'gender' => ['required'],
@@ -108,7 +108,13 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        //
+        $faculties = Faculty::all();
+        $classrooms = Classroom::all();
+        $sections = Section::all();
+        $nationalities = Nationalitie::all();
+        $parents = My_Parent::all();
+        $doctors = Doctor::all();
+        return view('pages.student.edit', compact('student', 'faculties', 'classrooms', 'sections', 'nationalities', 'parents', 'doctors'));
     }
 
     /**
@@ -116,7 +122,41 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        //
+        // Validate the request data
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:students,email,' . $student->id,
+            'gender' => 'required|in:male,female',
+            'birth_day' => 'required|date',
+            'faculty_id' => 'required|exists:faculties,id',
+            'classroom_id' => 'required|exists:classrooms,id',
+            'section_id' => 'required|exists:sections,id',
+            'nationality_id' => 'required|exists:nationalities,id',
+            'parent_id' => 'required|exists:my__parents,id',
+            'doctor_id' => 'required|exists:doctors,id',
+        ]);
+
+        // Find the student by ID
+        $student = Student::findOrFail($student->id);
+
+        // Update the student data
+        $student->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'gender' => $request->input('gender'),
+            'birth_day' => $request->input('birth_day'),
+            'faculty_id' => $request->input('faculty_id'),
+            'classroom_id' => $request->input('classroom_id'),
+            'section_id' => $request->input('section_id'),
+            'nationality_id' => $request->input('nationality_id'),
+            'parent_id' => $request->input('parent_id'),
+            'doctor_id' => $request->input('doctor_id'),
+            'status' => $request->input('status', 'active'), // Default to 'active' if not provided
+        ]);
+
+        // Redirect with a success message
+        toastr('Student Updated Successfully');
+        return redirect()->route('student.index');
     }
 
     /**
@@ -124,6 +164,13 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-        //
+        $student = Student::findOrFail($student->id);
+
+        // Delete the student
+        $student->delete();
+
+        // Redirect with a success message
+        toastr('Student deleted successfully');
+        return redirect()->route('student.index');
     }
 }

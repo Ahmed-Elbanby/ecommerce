@@ -26,25 +26,26 @@
                 <tbody>
                     <?php $i = 0 ?>
                     @foreach($classrooms as $classroom)
-                            <tr>
-                                <?php        $i++ ?>
-                                <td>{{ $i }}</td>
-                                <td>{{ $classroom->name }}</td>
-                                <td>{{ $classroom->faculty ? $classroom->faculty->name : 'No Faculty' }}</td>
-                                <td>
-                                    <a class="btn btn-primary btn-sm" href="{{ route('classroom.edit', $classroom->id) }}"
-                                        title="edit"><i class="fa fa-edit"></i></a>
-                                    <!-- <a class="btn btn-danger btn-sm" href="{{ route('classroom.destroy', $classroom->id) }}" onclick="return confirm('Are you sure you want to delete this faculty ?');" title="Delete"><i class="fa fa-trash"></i></a> -->
-                                    <form action="{{ route('classroom.destroy', $classroom->id) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        @method('DELETE') <!-- Important for specifying the DELETE method -->
-                                        <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Are you sure you want to delete this Classroom?');">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </form>
-                            </tr>
+                    <tr>
+                        <?php $i++ ?>
+                        <td>{{ $i }}</td>
+                        <td>{{ $classroom->name }}</td>
+                        <td>{{ $classroom->faculty ? $classroom->faculty->name : 'No Faculty' }}</td>
+                        <td>
+                            <a class="btn btn-primary btn-sm" href="{{ route('classroom.edit', $classroom->id) }}"
+                                title="edit"><i class="fa fa-edit"></i></a>
+                            <!-- <a class="btn btn-danger btn-sm" href="{{ route('classroom.destroy', $classroom->id) }}" onclick="return confirm('Are you sure you want to delete this faculty ?');" title="Delete"><i class="fa fa-trash"></i></a> -->
+                            <form action="{{ route('classroom.destroy', $classroom->id) }}" method="POST"
+                                style="display:inline;">
+                                @csrf
+                                @method('DELETE') <!-- Important for specifying the DELETE method -->
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Are you sure you want to delete this Classroom?');">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
