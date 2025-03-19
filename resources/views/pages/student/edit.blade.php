@@ -13,6 +13,11 @@
                 @csrf
                 @method('PUT')
 
+                <div class="form-group">
+                    <label>Photo</label>
+                    <input type="file" class="form-control-file" name="image">
+                </div>
+
                 <!-- Name Field -->
                 <div class="form-group">
                     <label for="name">Name:</label>
@@ -60,9 +65,9 @@
                             <select class="form-control" id="faculty_id" name="faculty_id" required>
                                 <option value="">Select Faculty</option>
                                 @foreach ($faculties as $faculty)
-                                    <option value="{{ $faculty->id }}" {{ $faculty->id == $student->faculty_id ? 'selected' : '' }}>
-                                        {{ $faculty->name }}
-                                    </option>
+                                <option value="{{ $faculty->id }}" {{ $faculty->id == $student->faculty_id ? 'selected' : '' }}>
+                                    {{ $faculty->name }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -75,9 +80,9 @@
                             <select class="form-control" id="classroom_id" name="classroom_id" required>
                                 <option value="">Select Classroom</option>
                                 @foreach ($classrooms as $classroom)
-                                    <option value="{{ $classroom->id }}" {{ $classroom->id == $student->classroom_id ? 'selected' : '' }}>
-                                        {{ $classroom->name }}
-                                    </option>
+                                <option value="{{ $classroom->id }}" {{ $classroom->id == $student->classroom_id ? 'selected' : '' }}>
+                                    {{ $classroom->name }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -90,9 +95,9 @@
                             <select class="form-control" id="section_id" name="section_id" required>
                                 <option value="">Select Section</option>
                                 @foreach ($sections as $section)
-                                    <option value="{{ $section->id }}" {{ $section->id == $student->section_id ? 'selected' : '' }}>
-                                        {{ $section->name }}
-                                    </option>
+                                <option value="{{ $section->id }}" {{ $section->id == $student->section_id ? 'selected' : '' }}>
+                                    {{ $section->name }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -108,9 +113,9 @@
                             <select class="form-control" id="nationality_id" name="nationality_id" required>
                                 <option value="">Select Nationality</option>
                                 @foreach ($nationalities as $nationality)
-                                    <option value="{{ $nationality->id }}" {{ $nationality->id == $student->nationality_id ? 'selected' : '' }}>
-                                        {{ $nationality->name }}
-                                    </option>
+                                <option value="{{ $nationality->id }}" {{ $nationality->id == $student->nationality_id ? 'selected' : '' }}>
+                                    {{ $nationality->name }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -123,9 +128,9 @@
                             <select class="form-control" id="parent_id" name="parent_id" required>
                                 <option value="">Select Parent</option>
                                 @foreach ($parents as $parent)
-                                    <option value="{{ $parent->id }}" {{ $parent->id == $student->parent_id ? 'selected' : '' }}>
-                                        {{ $parent->father_name }}
-                                    </option>
+                                <option value="{{ $parent->id }}" {{ $parent->id == $student->parent_id ? 'selected' : '' }}>
+                                    {{ $parent->father_name }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -138,9 +143,9 @@
                             <select class="form-control" id="doctor_id" name="doctor_id" required>
                                 <option value="">Select Doctor</option>
                                 @foreach ($doctors as $doctor)
-                                    <option value="{{ $doctor->id }}" {{ $doctor->id == $student->doctor_id ? 'selected' : '' }}>
-                                        {{ $doctor->name }}
-                                    </option>
+                                <option value="{{ $doctor->id }}" {{ $doctor->id == $student->doctor_id ? 'selected' : '' }}>
+                                    {{ $doctor->name }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>

@@ -52,4 +52,8 @@ class Student extends Model
     {
         return $this->belongsTo(Doctor::class, 'doctor_id');
     }
+
+    public function images(){
+        return $this->morphMany(Image::class, 'imageable');
+    }
 }

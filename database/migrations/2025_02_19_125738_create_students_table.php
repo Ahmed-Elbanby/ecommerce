@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string("password");
             $table->string("gender");
             $table->date("birth_day");
+            $table->string('image')->nullable();
             $table->foreignId('faculty_id')->references('id')->on('faculties')->onDelete('cascade');
             $table->foreignId('classroom_id')->references('id')->on('classrooms')->onDelete('cascade');
             $table->foreignId('section_id')->references('id')->on('sections')->onDelete('cascade');

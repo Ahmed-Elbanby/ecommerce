@@ -21,6 +21,9 @@
     <!-- My Custom Style -->
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 
+    <!-- Datatable Styles -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css">
+
     <!-- LiveWire Styles -->
     @livewireStyles
 </head>
@@ -85,6 +88,9 @@
     <!-- Page level custom scripts -->
     <script src="{{ asset('sb-admin/js/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('sb-admin/js/demo/chart-pie-demo.js') }}"></script>
+
+    <!-- DataTable Scripts -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 

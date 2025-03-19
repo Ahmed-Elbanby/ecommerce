@@ -77,3 +77,17 @@ Route::resource('students', StudentController::class);
 
 Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
 Route::post('/students', [StudentController::class, 'store'])->name('students.store');
+
+Route::resource('student', StudentController::class);
+
+// Explicit route for "show" (singular)
+Route::get('/student/{student}', [StudentController::class, 'show'])
+     ->name('student.show'); // Singular name
+
+// // OR keep resource routes but customize the name:
+// Route::resource('student', StudentController::class)->names([
+//     'show' => 'student.show', // Force singular
+// ]);
+
+Route::get('/student/{student}/download', [StudentController::class, 'downloadImage'])
+    ->name('student.download');
