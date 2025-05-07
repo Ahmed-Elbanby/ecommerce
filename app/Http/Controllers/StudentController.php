@@ -13,6 +13,7 @@ use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Toastr;
 
 class StudentController extends Controller
 {
@@ -68,11 +69,11 @@ class StudentController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:students'],
+            'email' => ['required', 'email', 'unique:students'],
             'password' => ['required', 'string', 'min:8'],
             'gender' => ['required'],
             'birth_day' => ['required', 'date'],
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'image' => ['nullable'],
             'faculty_id' => ['required', 'exists:faculties,id'],
             'classroom_id' => ['required', 'exists:classrooms,id'],
             'section_id' => ['required', 'exists:sections,id'],
@@ -85,25 +86,107 @@ class StudentController extends Controller
 
         $student = Student::create($data);
 
+        // if ($request->hasFile('image')) {
+        //     $imagePath = $request->file('image')->store('students', 'public');
+        //     $student->image = $imagePath;
+        //     $student->save();
+        // }
+
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('students', 'public');
-            $student->image = $imagePath;
-            $student->save();
+            // try {
+            //     $imagePath = $request->file('image')->store('', 'attachments');
+            //     $student->image = $imagePath;
+            //     $student->save();
+            // } catch (\Exception $e) {
+            //     toastr()->error('Error storing image: ' . $e->getMessage());
+            //     return redirect()->back();
+            // }
+            $this->storeImage($student, $request->file('image'), true);
         }
+
+        // Handle multiple attachments
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
+                $this->storeImage($student, $file);
+            }
+        }
+
+        // if ($request->hasFile('photos')){
+        //     foreach($request->file('photo') as $file){
+        //         $name = $file->getClientOriginalName();
+        //         $file->storeAs('attachments/students/'.$student->name, $file->getClientOriginalName(), 'upload attachments');
+
+        //         Image::create([
+        //             'filename'=>$name,
+        //             'imageable_id'=>$student->id,
+        //             'imageable_type'=>Student::class,
+        //         ]);
+        //     }
+        // }
+
 
         toastr()->success('Student created successfully');
         return redirect()->route('student.index');
     }
 
+    private function storeImage(Student $student, $file, $isProfile = false)
+    {
+        $emailFolder = $student->email;
+        // $emailFolder = "students/{$student->email}";
+        $originalName = $file->getClientOriginalName();
+
+        // Create image record first to get ID
+        $image = Image::create([
+            'filename' => $originalName,
+            'imageable_id' => $student->id,
+            'imageable_type' => Student::class,
+        ]);
+
+        // Generate new filename
+        $newFilename = $image->id . ' - ' . $student->email . ' - ' . $originalName;
+
+        // Store file
+        $path = $file->storeAs(
+            $emailFolder,
+            $newFilename,
+            'attachments'
+        );
+
+        // Update image record if needed
+        if ($isProfile) {
+            $student->update(['image' => $path]);
+        }
+    }
+
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    // public function show($id)
+    // {
+    //     $student = Student::with(['faculty', 'classroom', 'section', 'nationality', 'parent', 'doctor'])
+    //                      ->findOrFail($id);
+    //     return view('pages.student.show', ['student' => $student]);
+    // }
+
+    public function show(Student $student)
     {
-        $student = Student::with(['faculty', 'classroom', 'section', 'nationality', 'parent', 'doctor'])
-                         ->findOrFail($id);
-        return view('pages.student.show', ['student' => $student]);
+        $student->load(['faculty', 'classroom', 'section', 'nationality', 'parent', 'doctor', 'images']);
+        return view('pages.student.show', compact('student'));
     }
+
+    public function destroyAttachment(Student $student, Image $image)
+    {
+        Storage::disk('attachments')->delete($image->filename);
+        $image->delete();
+        toastr()->success('Attachment deleted successfully');
+        return back();
+    }
+
+    // public function downloadAttachment(Student $student, Image $image)
+    // {
+    //     $path = storage_path('app/attachments/'.$student->email.'/'.$image->filename);
+    //     return response()->download($path);
+    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -149,9 +232,16 @@ class StudentController extends Controller
         }
 
         $student->update($request->only([
-            'name', 'email', 'gender', 'birth_day', 
-            'faculty_id', 'classroom_id', 'section_id',
-            'nationality_id', 'parent_id', 'doctor_id'
+            'name',
+            'email',
+            'gender',
+            'birth_day',
+            'faculty_id',
+            'classroom_id',
+            'section_id',
+            'nationality_id',
+            'parent_id',
+            'doctor_id'
         ]));
 
         toastr()->success('Student updated successfully');
@@ -169,5 +259,41 @@ class StudentController extends Controller
         $student->delete();
         toastr()->success('Student deleted successfully');
         return redirect()->route('student.index');
+    }
+
+    public function Upload_attachment(Request $request, Student $student)
+    {
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photo') as $file) {
+                $name = $file->getClientOriginalName();
+                // $file->storeAs('attachments/students/'.$student->name, $file->getClientOriginalName(), 'upload attachments');
+                $file->storeAs($student->name, $name, 'attachments');
+
+                Image::create([
+                    'filename' => $name,
+                    'imageable_id' => $student->id,
+                    'imageable_type' => Student::class,
+                ]);
+            }
+        }
+        toastr()->success('UPDATE Success');
+        return redirect()->route('student.show', $request->student_id);
+    }
+
+    // public function Download_attachment($studentsname, $filename)
+    // {
+    //     // return response()->download(public_path('attachments/students/' . $studentsname . '/' . $filename));
+    //     $path = base_path("attachments/students/{$studentsname}/{$filename}");
+    //     return response()->download($path);
+    // }
+    public function Download_attachment(Student $student, $filename)
+    {
+        $path = base_path("attachments/students/{$student->email}/{$filename}");
+
+        if (!file_exists($path)) {
+            abort(404);
+        }
+
+        return response()->download($path);
     }
 }

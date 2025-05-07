@@ -37,13 +37,30 @@
             <tbody>
                 @foreach ($students as $student)
                 <tr>
-                    <td>
+                    <!-- <td>
                         @if ($student->image)
                         <img src="{{ asset('storage/' . $student->image) }}"
                             alt="Profile"
                             style="max-width: 50px; max-height: 50px;">
                         @else
                         No Image
+                        @endif
+                    </td> -->
+                    <!-- <td>
+                        @if ($student->image)
+                        <img src="{{ asset('attachments/students/' . $student->image) }}"
+                            style="max-width: 50px; max-height: 50px;">
+                        @else
+                        No Image
+                        @endif
+                    </td> -->
+                    <td>
+                        @if($student->images->isNotEmpty())
+                        <img src="{{ Storage::disk('attachments')->url($student->images->first()->path) }}"
+                            style="width: 50px; height: 50px; object-fit: cover;"
+                            class="rounded">
+                        @else
+                        <span class="text-muted">No image</span>
                         @endif
                     </td>
                     <td>{{ $student->name }}</td>

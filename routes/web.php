@@ -91,3 +91,18 @@ Route::get('/student/{student}', [StudentController::class, 'show'])
 
 Route::get('/student/{student}/download', [StudentController::class, 'downloadImage'])
     ->name('student.download');
+
+
+// Route::get('/student/{id}', [StudentController::class, 'show'])->name('student.show');
+// Route::post('/student/{student}/upload_attachment', [StudentController::class, 'Upload_attachment'])->name('student.upload_attachment');
+// Route::get('/download_attachment/{studentsname}/{filename}', [StudentController::class, 'Download_attachment'])->name('student.download');
+
+
+Route::post('/students/{student}/attachments', [StudentController::class, 'Upload_attachment'])
+     ->name('student.upload_attachment');
+
+Route::delete('/students/{student}/attachments/{image}', [StudentController::class, 'destroyAttachment'])
+     ->name('student.destroy_attachment');
+
+Route::get('/students/{student}/attachments/{image}/download', [StudentController::class, 'downloadAttachment'])
+     ->name('student.download_attachment');

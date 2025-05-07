@@ -23,6 +23,8 @@ class Student extends Model
         'doctor_id'
     ];
 
+    protected $dates = ['birth_day'];
+
     public function faculty()
     {
         return $this->belongsTo(Faculty::class, 'faculty_id');

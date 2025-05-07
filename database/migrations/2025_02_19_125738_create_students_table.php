@@ -24,7 +24,7 @@ return new class extends Migration
             $table->foreignId('section_id')->references('id')->on('sections')->onDelete('cascade');
             $table->foreignId('nationality_id')->references('id')->on('nationalities')->onDelete('cascade');
             $table->foreignId('parent_id')->references('id')->on('my__parents')->onDelete('cascade');
-            $table->foreignId('doctors_id')->references('id')->on('doctors')->onDelete('cascade');
+            $table->foreignId('doctor_id')->references('id')->on('doctors')->onDelete('cascade');
             $table->timestamps();
         });
     }

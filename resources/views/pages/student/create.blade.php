@@ -8,12 +8,32 @@
         <div class="card-header text-black">
             <h3>Create New Student</h3>
         </div>
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <div class="card-body">
-            <form action="{{ route('student.store') }}" method="POST">
+            <form action="{{ route('student.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label>Photo</label>
                     <input type="file" class="form-control-file" name="image">
+                </div> -->
+                <div class="form-group">
+                    <label>Additional Attachments</label>
+                    <input type="file"
+                        class="form-control-file"
+                        name="attachments[]"
+                        multiple
+                        accept="image/*,.pdf">
+                    <small class="form-text text-muted">
+                        You can select multiple files (images or PDFs)
+                    </small>
                 </div>
                 <div class="form-group">
                     <label for="name">Name:</label>
