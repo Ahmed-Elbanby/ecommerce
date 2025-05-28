@@ -131,26 +131,25 @@ class StudentController extends Controller
 
     private function storeImage(Student $student, $file, $isProfile = false)
     {
-        $emailFolder = $student->email;
-        // $emailFolder = "students/{$student->email}";
         $originalName = $file->getClientOriginalName();
 
-        // Create image record first to get ID
-        $image = Image::create([
-            'filename' => $originalName,
-            'imageable_id' => $student->id,
-            'imageable_type' => Student::class,
-        ]);
-
         // Generate new filename
-        $newFilename = $image->id . ' - ' . $student->email . ' - ' . $originalName;
+        $newFilename = $student->email . ' - ' . $originalName;
 
         // Store file
         $path = $file->storeAs(
-            $emailFolder,
+            $student->email,
             $newFilename,
-            'attachments'
+            'student_attachments'
         );
+
+        // Create image record first to get ID
+        $image = Image::create([
+            'filename' => $newFilename,
+            'path' => $path,
+            'imageable_id' => $student->id,         // Add this
+            'imageable_type' => Student::class,     // Add this
+        ]);
 
         // Update image record if needed
         if ($isProfile) {
@@ -174,13 +173,13 @@ class StudentController extends Controller
         return view('pages.student.show', compact('student'));
     }
 
-    public function destroyAttachment(Student $student, Image $image)
-    {
-        Storage::disk('attachments')->delete($image->filename);
-        $image->delete();
-        toastr()->success('Attachment deleted successfully');
-        return back();
-    }
+    // public function destroyAttachment(Student $student, Image $image)
+    // {
+    //     Storage::disk('attachments')->delete($image->filename);
+    //     $image->delete();
+    //     toastr()->success('Attachment deleted successfully');
+    //     return back();
+    // }
 
     // public function downloadAttachment(Student $student, Image $image)
     // {
@@ -263,21 +262,26 @@ class StudentController extends Controller
 
     public function Upload_attachment(Request $request, Student $student)
     {
-        if ($request->hasFile('photos')) {
-            foreach ($request->file('photo') as $file) {
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
                 $name = $file->getClientOriginalName();
                 // $file->storeAs('attachments/students/'.$student->name, $file->getClientOriginalName(), 'upload attachments');
-                $file->storeAs($student->name, $name, 'attachments');
+                $safeName = preg_replace('/[^a-zA-Z0-9._-]/', '_', $name);
+
+                $path = $file->storeAs($student->email, $safeName, 'student_attachments');
 
                 Image::create([
-                    'filename' => $name,
-                    'imageable_id' => $student->id,
-                    'imageable_type' => Student::class,
+                    'filename' => $safeName,
+                    'path' => $path,
+                    'imageable_id' => $student->id,         // Add this
+                    'imageable_type' => Student::class,     // Add this
                 ]);
             }
         }
         toastr()->success('UPDATE Success');
-        return redirect()->route('student.show', $request->student_id);
+        return redirect()->route('student.show', $student->id);
+
+        // dd($request->all());
     }
 
     // public function Download_attachment($studentsname, $filename)
@@ -286,14 +290,37 @@ class StudentController extends Controller
     //     $path = base_path("attachments/students/{$studentsname}/{$filename}");
     //     return response()->download($path);
     // }
+    // public function Download_attachment(Student $student, $filename)
+    // {
+    //     $path = base_path("attachments/students/{$student->email}/{$filename}");
+
+    //     if (!file_exists($path)) {
+    //         abort(404);
+    //     }
+
+    //     return response()->download($path);
+    // }
+
     public function Download_attachment(Student $student, $filename)
     {
-        $path = base_path("attachments/students/{$student->email}/{$filename}");
+        $image = Image::where('filename', $filename)
+            ->where('imageable_id', $student->id)
+            ->firstOrFail();
 
-        if (!file_exists($path)) {
-            abort(404);
+        return Storage::disk('student_attachments')->download($image->path);
+    }
+
+    public function destroyAttachment(Student $student, Image $image)
+    {
+        // Verify the image belongs to the student
+        if ($image->imageable_id !== $student->id) {
+            abort(403, 'Unauthorized action');
         }
 
-        return response()->download($path);
+        Storage::disk('student_attachments')->delete($image->path);
+        $image->delete();
+
+        toastr()->success('Attachment deleted successfully');
+        return back();
     }
 }

@@ -36,9 +36,9 @@
                             <!-- <img src="{{ asset('attachments/students/' . $student->image) }}"
                                 class="img-fluid rounded mb-4"
                                 alt="Profile Image"> -->
-                            <img src="C:\wamp\www\ecommerce\attachments\students\{{ $student->id . ' - ' . $student->email }}"
+                            <img src="{{ Storage::disk('student_attachments')->url($student->image) }}"
                                 class="img-fluid rounded mb-4"
-                                alt="Test">
+                                alt="Profile Image">
                             @endif
 
                             <div class="card">
@@ -69,7 +69,7 @@
                                 @foreach($student->images as $image)
                                 <div class="col-md-4 mb-4">
                                     <div class="card">
-                                        <img src="{{ Storage::disk('attachments')->url($image->path) }}"
+                                        <img src="{{ Storage::disk('student_attachments')->url($image->path) }}"
                                             class="card-img-top"
                                             alt="Attachment">
                                         <div class="card-body text-center">

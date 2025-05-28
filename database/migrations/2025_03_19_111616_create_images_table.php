@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('images', function(Blueprint $table){
+        Schema::create('images', function (Blueprint $table) {
             $table->id();
             $table->string('filename');
-            $table->integer('imageable_id');
-            $table->string('imageable_type');
+            $table->unsignedBigInteger('imageable_id');  // Change from student_id
+            $table->string('imageable_type');            // Add this new column
+            $table->string('path');
             $table->timestamps();
         });
     }

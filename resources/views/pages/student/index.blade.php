@@ -56,7 +56,7 @@
                     </td> -->
                     <td>
                         @if($student->images->isNotEmpty())
-                        <img src="{{ Storage::disk('attachments')->url($student->images->first()->path) }}"
+                        <img src="{{ Storage::disk('student_attachments')->url($student->images->first()->path) }}"
                             style="width: 50px; height: 50px; object-fit: cover;"
                             class="rounded">
                         @else
