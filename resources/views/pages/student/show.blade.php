@@ -133,8 +133,13 @@
                                             <i class="fas fa-download"></i>
                                         </a> -->
 
-                                        <a href="{{ route('student.download', ['student' => $student, 'filename' => $image->filename]) }}"
+                                        <!-- <a href="{{ route('student.download_attachment', ['student' => $student, 'filename' => $image->filename]) }}"
                                             class="btn btn-sm btn-primary">
+                                            Download
+                                        </a> -->
+
+                                        {{-- Because $image->path is already "/storage/…/stu2.jfif", clicking this will download/serve the file directly. --}}
+                                        <a href="{{ $image->path }}" download="{{ $image->filename }}" class="btn btn-sm btn-primary">
                                             Download
                                         </a>
 

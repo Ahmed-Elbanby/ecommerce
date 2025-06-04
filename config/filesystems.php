@@ -46,9 +46,11 @@ return [
 
         'student_attachments' => [
             'driver' => 'local',
-            'root' => storage_path('app/public/students'),
-            'url' => env('APP_URL') . '/storage/students',
-            'visibility' => 'public',
+            // 'root' => storage_path('storage/app/public/students'),
+            'root'   => storage_path('app/student_attachments'),
+            // 'url' => env('APP_URL') . '/storage/students',
+            // 'visibility' => 'public',
+            'visibility' => 'private',
         ],
 
         's3' => [

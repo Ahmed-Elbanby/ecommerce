@@ -104,5 +104,5 @@ Route::post('/students/{student}/attachments', [StudentController::class, 'Uploa
 Route::delete('/students/{student}/attachments/{image}', [StudentController::class, 'destroyAttachment'])
      ->name('student.destroy_attachment');
 
-Route::get('/students/{student}/attachments/{image}/download', [StudentController::class, 'downloadAttachment'])
+Route::get('/students/{student}/attachments/{filename}/download', [StudentController::class, 'Download_attachment'])
      ->name('student.download_attachment');

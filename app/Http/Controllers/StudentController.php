@@ -136,24 +136,34 @@ class StudentController extends Controller
         // Generate new filename
         $newFilename = $student->email . ' - ' . $originalName;
 
-        // Store file
-        $path = $file->storeAs(
-            $student->email,
+        // // Store file
+        // $path = $file->storeAs(
+        //     $student->email,
+        //     $newFilename,
+        //     'student_attachments'
+        // );
+
+        $diskPath = $file->storeAs(
+            'students/' . $student->email, // subfolder under storage/app/public
             $newFilename,
-            'student_attachments'
+            'public'                        // use the "public" disk
         );
+
+        // 4) Generate a PUBLIC URL from that diskPath:
+        //    e.g. "/storage/students/alice@example.com/alice@example.com - selfie.jpg"
+        $publicUrl = Storage::url($diskPath);
 
         // Create image record first to get ID
         $image = Image::create([
             'filename' => $newFilename,
-            'path' => $path,
+            'path' => $publicUrl,    // <— full "/storage/…" URL, NOT just disk path
             'imageable_id' => $student->id,         // Add this
             'imageable_type' => Student::class,     // Add this
         ]);
 
         // Update image record if needed
         if ($isProfile) {
-            $student->update(['image' => $path]);
+            $student->update(['image' => $publicUrl]);
         }
     }
 
@@ -264,18 +274,21 @@ class StudentController extends Controller
     {
         if ($request->hasFile('attachments')) {
             foreach ($request->file('attachments') as $file) {
-                $name = $file->getClientOriginalName();
-                // $file->storeAs('attachments/students/'.$student->name, $file->getClientOriginalName(), 'upload attachments');
-                $safeName = preg_replace('/[^a-zA-Z0-9._-]/', '_', $name);
+                // $name = $file->getClientOriginalName();
+                // // $file->storeAs('attachments/students/'.$student->name, $file->getClientOriginalName(), 'upload attachments');
+                // $safeName = preg_replace('/[^a-zA-Z0-9._-]/', '_', $name);
 
-                $path = $file->storeAs($student->email, $safeName, 'student_attachments');
+                // $path = $file->storeAs($student->email, $safeName, 'student_attachments');
 
-                Image::create([
-                    'filename' => $safeName,
-                    'path' => $path,
-                    'imageable_id' => $student->id,         // Add this
-                    'imageable_type' => Student::class,     // Add this
-                ]);
+                // Image::create([
+                //     'filename' => $safeName,
+                //     'path' => $path,
+                //     'imageable_id' => $student->id,         // Add this
+                //     'imageable_type' => Student::class,     // Add this
+                // ]);
+
+                // Just hand the UploadedFile to our new storeImage() helper:
+                $this->storeImage($student, $file);
             }
         }
         toastr()->success('UPDATE Success');
@@ -301,13 +314,26 @@ class StudentController extends Controller
     //     return response()->download($path);
     // }
 
-    public function Download_attachment(Student $student, $filename)
+    public function download_attachment(Student $student, $filename)
     {
         $image = Image::where('filename', $filename)
             ->where('imageable_id', $student->id)
             ->firstOrFail();
 
-        return Storage::disk('student_attachments')->download($image->path);
+        /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+
+        // Get the disk instance
+        $disk = Storage::disk('public');
+
+        // Verify file exists
+        if (!$disk->exists($image->path)) {
+            abort(404, 'File not found');
+        }
+
+        // return Storage::disk('student_attachments')->download($image->path);
+
+        // Download with original filename
+        return $disk->download($image->path, $image->filename);
     }
 
     public function destroyAttachment(Student $student, Image $image)
